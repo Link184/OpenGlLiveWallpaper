@@ -5,7 +5,7 @@ import java.nio.ByteOrder
 import kotlin.random.Random
 
 data class ParticleSystem(val maxParticles: Int) {
-    val particles: List<Particle>
+    private val particles: List<Particle>
 
     init {
         val random = Random(System.nanoTime())
@@ -17,10 +17,11 @@ data class ParticleSystem(val maxParticles: Int) {
     private val vertexData by lazy {
         FloatArray(maxParticles * 4)
         val vertexData = FloatArray(maxParticles * 4)
+        val random = Random(System.nanoTime())
         particles.forEachIndexed { index, particle ->
             vertexData[index * 4] = particle.x
             vertexData[index * 4 + 1] = particle.y // y: Evenly spaced from 1 to -1
-            vertexData[index * 4 + 2] = 0f // z: 0 (not used)
+            vertexData[index * 4 + 2] = random.nextDouble(-1.0, 1.0).toFloat() // z: 0 (not used)
             vertexData[index * 4 + 3] = 1f // w: 1 (homogeneous coordinate)
 //            particleVelocities[index] = particle.velocity // Falling speed
         }
